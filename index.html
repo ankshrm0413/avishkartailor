@@ -11,11 +11,30 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #1e3c72;
+            --secondary: #2a5298;
+            --accent: #ffd700;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
         }
 
         /* Header & Navigation */
@@ -27,14 +46,15 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -46,74 +66,102 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         nav ul {
             display: flex;
             list-style: none;
             gap: 2rem;
+            transition: all 0.3s ease;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
             font-weight: 500;
-        }
-
-        nav a:hover {
-            color: #ffd700;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 150px 2rem 100px;
-            text-align: center;
             position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section with Video Background */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10l20 20M30 10l20 20M50 10l20 20M70 10l20 20" stroke="white" stroke-width="0.5" opacity="0.1"/></svg>');
-            animation: scroll 20s linear infinite;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100px); }
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            z-index: 1;
         }
 
         .hero-content {
             position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            z-index: 2;
+            max-width: 900px;
+            padding: 2rem;
             animation: fadeInUp 1s;
         }
 
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
         .hero p {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 3vw, 1.5rem);
             margin-bottom: 2rem;
-            animation: fadeInUp 1s 0.2s backwards;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -121,9 +169,16 @@
             }
         }
 
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .cta-button {
             display: inline-block;
-            background: #ffd700;
+            background: var(--accent);
             color: #333;
             padding: 1rem 2.5rem;
             text-decoration: none;
@@ -132,31 +187,93 @@
             font-size: 1.1rem;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-            animation: fadeInUp 1s 0.4s backwards;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
         }
 
-        /* Services Section */
-        .services {
-            padding: 80px 2rem;
-            background: #f8f9fa;
+        .cta-button.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
         }
 
+        .cta-button.secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .scroll-indicator div {
+            width: 30px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 25px;
+            position: relative;
+        }
+
+        .scroll-indicator div::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: scroll 2s infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                top: 8px;
+                opacity: 1;
+            }
+            100% {
+                top: 30px;
+                opacity: 0;
+            }
+        }
+
+        /* Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 0 2rem;
         }
 
+        /* Section Headings */
         h2 {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e3c72;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--primary);
             position: relative;
+            font-weight: 800;
         }
 
         h2::after {
@@ -166,53 +283,381 @@
             height: 4px;
             background: linear-gradient(90deg, #667eea, #764ba2);
             margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* Image Gallery Slider */
+        .gallery-section {
+            padding: 80px 0;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .gallery-slider {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.5s ease;
+            padding: 1rem 0;
+        }
+
+        .gallery-item {
+            min-width: 350px;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: white;
+            padding: 2rem 1.5rem 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .slider-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .slider-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background: white;
         }
 
         .service-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 3rem;
         }
 
         .service-card {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
+            padding: 2.5rem;
+            border-radius: 20px;
             text-align: center;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: all 0.4s;
+            z-index: 0;
+        }
+
+        .service-card:hover::before {
+            left: 0;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.4);
+        }
+
+        .service-card > * {
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover > * {
+            color: white;
         }
 
         .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .service-card h3 {
             margin-bottom: 1rem;
-            color: #1e3c72;
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* Video Section */
+        .video-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 3rem auto 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 80px 0;
+            background: var(--light);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .project-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .project-list li {
+            padding: 0.7rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .project-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .project-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        /* Testimonials */
+        .testimonial-section {
+            margin-top: 4rem;
+            padding: 4rem 0;
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--accent);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            font-size: 5rem;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial strong {
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* Booking Form */
         .booking {
-            padding: 80px 2rem;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
         }
 
         .booking-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.1);
+            max-width: 700px;
+            margin: 3rem auto 0;
+            background: rgba(255,255,255,0.95);
             padding: 3rem;
-            border-radius: 20px;
+            border-radius: 25px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
         }
 
         .form-group {
@@ -222,27 +667,36 @@
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 600;
+            color: var(--primary);
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 1rem;
-            background: rgba(255,255,255,0.9);
+            background: white;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
         }
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
         }
 
         .submit-btn {
-            background: #ffd700;
-            color: #333;
-            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.2rem 3rem;
             border: none;
             border-radius: 50px;
             font-size: 1.1rem;
@@ -250,212 +704,29 @@
             cursor: pointer;
             width: 100%;
             transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
         .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
         }
 
-        /* Features Section */
-        .features {
-            padding: 80px 2rem;
-            background: white;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .feature-item {
-            text-align: center;
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Projects Section */
-        .projects {
-            padding: 80px 2rem;
-            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .project-header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .project-icon {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-header h3 {
-            margin: 0;
-            font-size: 1.3rem;
-        }
-
-        .project-details {
-            padding: 1.5rem;
-        }
-
-        .project-details p {
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #1e3c72;
-        }
-
-        .project-details ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .project-details li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: #555;
-        }
-
-        .project-details li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .project-tag {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-top: 1rem;
-        }
-
-        .testimonial-section {
-            margin-top: 4rem;
-        }
-
-        .testimonials {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .testimonial {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-left: 4px solid #ffd700;
-        }
-
-        .testimonial p {
-            font-style: italic;
-            color: #555;
-            margin-bottom: 1rem;
-            line-height: 1.8;
-        }
-
-        .testimonial strong {
-            color: #1e3c72;
-        }
-
-        /* Footer */
-        footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 3rem 2rem 1rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: #ffd700;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #ffd700;
+        .submit-btn:active {
+            transform: translateY(0);
         }
 
         /* Success Message */
         .success-message {
             display: none;
-            background: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
             text-align: center;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
 
         .success-message.show {
@@ -474,24 +745,257 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .footer-section p {
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #999;
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s;
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
             }
-            
-            .hero p {
-                font-size: 1rem;
+            50% {
+                box-shadow: 0 4px 30px rgba(37, 211, 102, 0.8);
+            }
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading span {
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
             }
 
             nav ul {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                background: linear-gradient(135deg, #1e3c72, #2a5298);
+                width: 70%;
+                height: calc(100vh - 70px);
                 flex-direction: column;
+                padding: 2rem;
                 gap: 1rem;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .hero {
+                height: 80vh;
+            }
+
+            .gallery-item {
+                min-width: 280px;
+                height: 350px;
             }
 
             .booking-form {
                 padding: 2rem 1.5rem;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Dark Mode Toggle (Optional) */
+        .theme-toggle {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+
+        /* Smooth Transitions */
+        * {
+            scroll-behavior: smooth;
+        }
+
+        /* Image Loading Effect */
+        img {
+            transition: opacity 0.3s;
+        }
+
+        img[data-src] {
+            opacity: 0;
+        }
+
+        img.loaded {
+            opacity: 1;
         }
     </style>
 </head>
@@ -499,23 +1003,91 @@
     <!-- Header -->
     <header>
         <nav>
-            <div class="logo">✂️ Avishkar Tailor</div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#booking">Book Now</a></li>
-                <li><a href="#contact">Contact</a></li>
+            <div class="logo">
+                <span>✂️</span>
+                <span>Avishkar Tailor</span>
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#services" onclick="closeMenu()">Services</a></li>
+                <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+                <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
+                <li><a href="#booking" onclick="closeMenu()">Book Now</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://cdn.pixabay.com/video/2023/05/02/160646-821949558_large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>Perfect Fit, Perfect Style</h1>
             <p>Experience the art of bespoke tailoring with Avishkar Tailor - Where tradition meets contemporary fashion</p>
-            <a href="#booking" class="cta-button">Book Appointment</a>
+            <div class="cta-buttons">
+                <a href="#booking" class="cta-button">Book Appointment</a>
+                <a href="#gallery" class="cta-button secondary">View Our Work</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div></div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <h2>Our Masterpieces</h2>
+            <p class="section-subtitle">Explore our collection of custom tailored garments and satisfied customers</p>
+            
+            <div class="gallery-slider">
+                <div class="gallery-track" id="galleryTrack">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1594938291221-94f18cbb5660?w=500" alt="Custom Suit">
+                        <div class="gallery-caption">
+                            <h3>Premium Custom Suits</h3>
+                            <p>Handcrafted with finest fabrics</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1618517351616-38fb9c5210c6?w=500" alt="Wedding Attire">
+                        <div class="gallery-caption">
+                            <h3>Wedding Collection</h3>
+                            <p>Making your special day memorable</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500" alt="Corporate Wear">
+                        <div class="gallery-caption">
+                            <h3>Corporate Formal</h3>
+                            <p>Professional business attire</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500" alt="Casual Wear">
+                        <div class="gallery-caption">
+                            <h3>Casual Collection</h3>
+                            <p>Comfortable everyday fashion</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500" alt="Alterations">
+                        <div class="gallery-caption">
+                            <h3>Expert Alterations</h3>
+                            <p>Perfect fit guaranteed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-btn" onclick="slideGallery(-1)">❮</button>
+                    <button class="slider-btn" onclick="slideGallery(1)">❯</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -523,16 +1095,12 @@
     <section class="services" id="services">
         <div class="container">
             <h2>Our Premium Services</h2>
+            <p class="section-subtitle">Comprehensive tailoring solutions for every occasion</p>
             <div class="service-grid">
                 <div class="service-card">
                     <div class="service-icon">👔</div>
                     <h3>Custom Suits</h3>
                     <p>Bespoke suits tailored to perfection. Choose your fabric, style, and fit for a truly unique look.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">👗</div>
-                    <h3>Traditional Wear</h3>
-                    <p>Expert stitching for sarees, lehengas, sherwanis, and all traditional Indian garments.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">👚</div>
@@ -573,31 +1141,16 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
+    <!-- Video Section -->
+    <section class="video-section">
         <div class="container">
-            <h2>Why Choose Avishkar Tailor?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">🏆</div>
-                    <h3>25+ Years Experience</h3>
-                    <p>Decades of expertise in tailoring excellence</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">✅</div>
-                    <h3>Quality Guarantee</h3>
-                    <p>100% satisfaction with every stitch</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">💰</div>
-                    <h3>Best Prices</h3>
-                    <p>Premium quality at affordable rates</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">⏰</div>
-                    <h3>Timely Delivery</h3>
-                    <p>Your garments ready when promised</p>
-                </div>
+            <h2 style="color: white;">Watch Our Craftsmanship</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9)">See the art of tailoring in action</p>
+            <div class="video-container">
+                <video controls poster="https://images.unsplash.com/photo-1594938291221-94f18cbb5660?w=900">
+                    <source src="https://cdn.pixabay.com/video/2020/08/11/46639-450001899_large.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </div>
     </section>
@@ -606,18 +1159,13 @@
     <section class="projects" id="projects">
         <div class="container">
             <h2>Our Prestigious Projects</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #555;">
-                We take pride in serving various institutions and organizations with our exceptional tailoring services
-            </p>
+            <p class="section-subtitle">Serving institutions and organizations with excellence</p>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏫</div>
+                    <div class="project-image">🏫</div>
+                    <div class="project-content">
                         <h3>School Uniforms</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
+                        <ul class="project-list">
                             <li>Delhi Public School - 500+ uniforms annually</li>
                             <li>St. Mary's Convent - Complete uniform supply</li>
                             <li>Ryan International School - Sports & regular uniforms</li>
@@ -628,33 +1176,27 @@
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏢</div>
+                    <div class="project-image">🏢</div>
+                    <div class="project-content">
                         <h3>Corporate Uniforms</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
-                            <li>Tech Mahindra - IT professional attire</li>
-                            <li>HDFC Bank - Branch staff uniforms</li>
-                            <li>Taj Hotels - Hospitality staff uniforms</li>
-                            <li>Infosys - Corporate formal wear</li>
+                        <ul class="project-list">
+                            <li>X Tech - IT professional attire</li>
+                            <li>X Bank - Branch staff uniforms</li>
+                            <li>X Hotels - Hospitality staff uniforms</li>
+                            <li>X Corp - Corporate formal wear</li>
                         </ul>
                         <div class="project-tag">Trusted Vendor</div>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏥</div>
+                    <div class="project-image">🏥</div>
+                    <div class="project-content">
                         <h3>Healthcare Uniforms</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
+                        <ul class="project-list">
                             <li>Ruby Hall Clinic - Medical staff uniforms</li>
                             <li>Jehangir Hospital - Scrubs & lab coats</li>
-                            <li>Deenanath Mangeshkar Hospital - Complete healthcare attire</li>
+                            <li>Deenanath Mangeshkar Hospital - Healthcare attire</li>
                             <li>Various clinics - Custom medical wear</li>
                         </ul>
                         <div class="project-tag">Quality Certified</div>
@@ -662,13 +1204,10 @@
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏛️</div>
+                    <div class="project-image">🏛️</div>
+                    <div class="project-content">
                         <h3>Government Projects</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
+                        <ul class="project-list">
                             <li>Pune Municipal Corporation - Staff uniforms</li>
                             <li>Police Department - Ceremonial uniforms</li>
                             <li>Railway Department - Staff attire</li>
@@ -679,13 +1218,10 @@
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🎓</div>
+                    <div class="project-image">🎓</div>
+                    <div class="project-content">
                         <h3>College & University</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
+                        <ul class="project-list">
                             <li>Symbiosis College - Department uniforms</li>
                             <li>Fergusson College - Sports team jerseys</li>
                             <li>MIT College - Lab coats & formal wear</li>
@@ -695,31 +1231,13 @@
                     </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">✈️</div>
-                        <h3>Aviation & Transport</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
-                            <li>Air India - Cabin crew uniforms</li>
-                            <li>PMPML - Bus conductor uniforms</li>
-                            <li>Airport Authority - Ground staff attire</li>
-                            <li>Private airlines - Custom tailoring</li>
-                        </ul>
-                        <div class="project-tag">Premium Partner</div>
-                    </div>
-                </div>
+              
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏨</div>
+                    <div class="project-image">🏨</div>
+                    <div class="project-content">
                         <h3>Hospitality Sector</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
+                        <ul class="project-list">
                             <li>Marriott Hotel - Chef & service uniforms</li>
                             <li>The Westin - Complete staff attire</li>
                             <li>Various restaurants - Custom chef coats</li>
@@ -729,44 +1247,26 @@
                     </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">⚽</div>
-                        <h3>Sports & Fitness</h3>
-                    </div>
-                    <div class="project-details">
-                        <p><strong>Projects Completed:</strong></p>
-                        <ul>
-                            <li>Cricket clubs - Team jerseys & tracksuits</li>
-                            <li>Fitness centers - Trainer uniforms</li>
-                            <li>Sports academies - Complete sportswear</li>
-                            <li>Marathon events - Participant t-shirts</li>
-                        </ul>
-                        <div class="project-tag">Sports Specialist</div>
-                    </div>
-                </div>
+        
             </div>
 
+            <!-- Testimonials -->
             <div class="testimonial-section">
-                <h3 style="text-align: center; margin: 4rem 0 2rem; font-size: 2rem; color: #1e3c72;">What Our Clients Say</h3>
+                <h3 style="text-align: center; font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">What Our Clients Say</h3>
                 <div class="testimonials">
                     <div class="testimonial">
-                        <p>"Avishkar Tailor has been our go-to partner for school uniforms for over 10 years. The quality and timely delivery are exceptional!"</p>
-                        <strong>- Principal, Delhi Public School</strong>
+                        <p>Avishkar Tailor has been our go-to partner for school uniforms for over 10 years. The quality and timely delivery are exceptional! Their attention to detail and commitment to excellence is unmatched.</p>
+                        <strong>- X, X Public School</strong>
                     </div>
                     <div class="testimonial">
-                        <p>"Professional service and attention to detail. They perfectly understand our corporate branding requirements."</p>
-                        <strong>- HR Manager, Tech Mahindra</strong>
+                        <p>Professional service and attention to detail. They perfectly understand our corporate branding requirements and deliver consistently high-quality uniforms for our entire team.</p>
+                        <strong>- HR Manager, C Mahindra</strong>
                     </div>
                     <div class="testimonial">
-                        <p>"Outstanding quality in healthcare uniforms. Comfortable fabrics and perfect sizing for our entire staff."</p>
-                        <strong>- Administrator, Ruby Hall Clinic</strong>
+                        <p>Outstanding quality in healthcare uniforms. Comfortable fabrics and perfect sizing for our entire staff. They understand the importance of hygiene and durability in medical wear.</p>
+                        <strong>- Administrator, X Hall Clinic</strong>
                     </div>
                 </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="#booking" class="cta-button">Partner With Us</a>
             </div>
         </div>
     </section>
@@ -775,49 +1275,59 @@
     <section class="booking" id="booking">
         <div class="container">
             <h2 style="color: white;">Book Your Appointment</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9)">Get started with your custom tailoring journey today</p>
             <form class="booking-form" id="bookingForm">
-                <div class="form-group">
-                    <label for="name">Full Name *</label>
-                    <input type="text" id="name" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" required placeholder="+91 98765 43210">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number *</label>
-                    <input type="tel" id="phone" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Type *</label>
+                        <select id="service" required>
+                            <option value="">Select a service</option>
+                            <option value="custom-suits">Custom Suits</option>
+                            <option value="traditional">Traditional Wear</option>
+                            <option value="casual">Casual Wear</option>
+                            <option value="wedding">Wedding Attire</option>
+                            <option value="alterations">Alterations & Repairs</option>
+                            <option value="consultation">Designer Consultation</option>
+                            <option value="measurements">Body Measurements</option>
+                            <option value="home-service">Home Service</option>
+                            <option value="express">Express Service</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="form-group">
-                    <label for="service">Service Type *</label>
-                    <select id="service" required>
-                        <option value="">Select a service</option>
-                        <option value="custom-suits">Custom Suits</option>
-                        <option value="traditional">Traditional Wear</option>
-                        <option value="casual">Casual Wear</option>
-                        <option value="wedding">Wedding Attire</option>
-                        <option value="alterations">Alterations & Repairs</option>
-                        <option value="consultation">Designer Consultation</option>
-                        <option value="measurements">Body Measurements</option>
-                        <option value="home-service">Home Service</option>
-                        <option value="express">Express Service</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="date">Preferred Date *</label>
-                    <input type="date" id="date" required>
-                </div>
-                <div class="form-group">
-                    <label for="time">Preferred Time *</label>
-                    <input type="time" id="time" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Preferred Date *</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Preferred Time *</label>
+                        <input type="time" id="time" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="message">Additional Details</label>
-                    <textarea id="message" placeholder="Tell us about your requirements..."></textarea>
+                    <textarea id="message" placeholder="Tell us about your requirements, preferred fabrics, occasions, or any special requests..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn">Book Appointment</button>
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span>Book Appointment</span>
+                    <div class="spinner"></div>
+                </button>
                 <div class="success-message" id="successMsg">
-                    ✓ Appointment booked successfully! We'll contact you soon.
+                    ✓ Appointment booked successfully! We'll contact you soon to confirm your booking.
                 </div>
             </form>
         </div>
@@ -825,35 +1335,63 @@
 
     <!-- Footer -->
     <footer id="contact">
-        <div class="footer-content">
+        <div class="footer-content container">
             <div class="footer-section">
-                <h3>About Us</h3>
-                <p>Avishkar Tailor has been serving customers with exceptional tailoring services for over 25 years. We pride ourselves on quality craftsmanship and customer satisfaction.</p>
+                <h3>About Avishkar Tailor</h3>
+                <p>With over 25 years of expertise in tailoring, we've been serving customers with exceptional craftsmanship and personalized service. From individual clients to large institutions, we pride ourselves on quality and satisfaction.</p>
             </div>
             <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p>📍 Pune, Maharashtra, India</p>
-                <p>📞 +91 98765 43210</p>
+                <h3>Contact Information</h3>
+                <p>📍 Purulia, West Bengal, India</p>
+                <p>📞 +91 8759379731</p>
                 <p>✉️ info@avishkartailor.com</p>
+                <p>🌐 www.avishkartailor.com</p>
             </div>
             <div class="footer-section">
                 <h3>Working Hours</h3>
-                <p>Monday - Saturday: 10 AM - 8 PM</p>
-                <p>Sunday: 11 AM - 6 PM</p>
+                <p><strong>Monday - Saturday</strong></p>
+                <p>10:00 AM - 8:00 PM</p>
+                <p><strong>Sunday</strong></p>
+                <p>11:00 AM - 6:00 PM</p>
+                <p style="margin-top: 1rem; color: var(--accent);">Emergency & Express Services Available 24/7</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <p>Stay updated with our latest collections and offers</p>
                 <div class="social-links">
-                    <a href="#">📘</a>
-                    <a href="#">📷</a>
-                    <a href="#">🐦</a>
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="LinkedIn">💼</a>
                 </div>
             </div>
         </div>
-        <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333;">
-            © 2026 Avishkar Tailor. All rights reserved.
-        </p>
+        <div class="footer-bottom">
+            <p>© 2026 Avishkar Tailor. All Rights Reserved. | Designed with ❤️ for Perfect Fits</p>
+        </div>
     </footer>
 
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+        💬
+    </a>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">🌓</button>
+
     <script>
-        // Smooth scrolling
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.remove('active');
+        }
+
+        // Smooth Scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -864,36 +1402,103 @@
             });
         });
 
-        // Form submission
+        // Gallery Slider
+        let currentSlide = 0;
+        const track = document.getElementById('galleryTrack');
+        const items = document.querySelectorAll('.gallery-item');
+        const itemWidth = 350 + 24; // width + gap
+
+        function slideGallery(direction) {
+            const maxSlide = items.length - Math.floor(window.innerWidth / itemWidth);
+            currentSlide = Math.max(0, Math.min(currentSlide + direction, maxSlide));
+            track.style.transform = `translateX(-${currentSlide * itemWidth}px)`;
+        }
+
+        // Auto-slide gallery
+        setInterval(() => {
+            if (currentSlide >= items.length - Math.floor(window.innerWidth / itemWidth)) {
+                currentSlide = 0;
+            } else {
+                currentSlide++;
+            }
+            track.style.transform = `translateX(-${currentSlide * itemWidth}px)`;
+        }, 5000);
+
+        // Stats Counter Animation
+        const stats = document.querySelectorAll('.stat-number');
+        let animated = false;
+
+        function animateStats() {
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+
+                const updateCount = () => {
+                    if (current < target) {
+                        current += increment;
+                        stat.textContent = Math.floor(current) + (stat.textContent.includes('%') ? '%' : '+');
+                        setTimeout(updateCount, 20);
+                    } else {
+                        stat.textContent = target + (target === 100 ? '%' : '+');
+                    }
+                };
+
+                updateCount();
+            });
+        }
+
+        // Trigger stats animation on scroll
+        window.addEventListener('scroll', () => {
+            const statsSection = document.querySelector('.stats');
+            if (!animated && statsSection) {
+                const rect = statsSection.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                    animateStats();
+                    animated = true;
+                }
+            }
+        });
+
+        // Form Submission
         const form = document.getElementById('bookingForm');
         const successMsg = document.getElementById('successMsg');
+        const submitBtn = document.getElementById('submitBtn');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
-            const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                service: document.getElementById('service').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                message: document.getElementById('message').value
-            };
-
-            console.log('Booking submitted:', formData);
+            // Add loading state
+            submitBtn.classList.add('loading');
             
-            // Show success message
-            successMsg.classList.add('show');
-            
-            // Reset form
-            form.reset();
-            
-            // Hide success message after 5 seconds
+            // Simulate API call
             setTimeout(() => {
-                successMsg.classList.remove('show');
-            }, 5000);
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    service: document.getElementById('service').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    message: document.getElementById('message').value
+                };
+
+                console.log('Booking submitted:', formData);
+                
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                
+                // Show success message
+                successMsg.classList.add('show');
+                
+                // Reset form
+                form.reset();
+                
+                // Hide success message after 6 seconds
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 6000);
+            }, 2000);
         });
 
         // Set minimum date to today
@@ -901,20 +1506,95 @@
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
 
-        // Service card hover effect
-        const cards = document.querySelectorAll('.service-card');
+        // Theme Toggle
+        let darkMode = false;
+        function toggleTheme() {
+            darkMode = !darkMode;
+            document.body.style.filter = darkMode ? 'invert(1) hue-rotate(180deg)' : 'none';
+            document.querySelectorAll('img, video').forEach(el => {
+                el.style.filter = darkMode ? 'invert(1) hue-rotate(180deg)' : 'none';
+            });
+        }
+
+        // Lazy Loading Images
+        const images = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.getAttribute('data-src');
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+
+        // Add scroll effects
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Add parallax effect to hero
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero-content');
+            const scrolled = window.pageYOffset;
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - scrolled / 600;
+            }
+        });
+
+        // Service card click to booking
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const service = this.querySelector('h3').textContent;
+                const serviceSelect = document.getElementById('service');
+                
+                // Match service name to select options
+                const options = Array.from(serviceSelect.options);
+                const matchingOption = options.find(option => 
+                    option.text.toLowerCase().includes(service.toLowerCase().split(' ')[0])
+                );
+                
+                if (matchingOption) {
+                    serviceSelect.value = matchingOption.value;
+                }
+                
+                // Scroll to booking section
+                document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Add animation on scroll for cards
+        const cards = document.querySelectorAll('.service-card, .project-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
         cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                this.style.color = 'white';
-                this.querySelector('h3').style.color = 'white';
-            });
-            card.addEventListener('mouseleave', function() {
-                this.style.background = 'white';
-                this.style.color = '#333';
-                this.querySelector('h3').style.color = '#1e3c72';
-            });
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            cardObserver.observe(card);
         });
     </script>
 </body>
-</html>
